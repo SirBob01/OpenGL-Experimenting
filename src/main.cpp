@@ -9,23 +9,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "util/stb_image.h"
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <math.h>
 
-const std::string load_shader(std::string filename) {
-    std::ifstream file(filename);
-    if(!file.is_open()) {
-        throw std::runtime_error("Failed to load shader: " + filename);
-    }
-    std::stringstream stream;
-    stream << file.rdbuf();
-    file.close();
-    return stream.str();
-}
+#include "pipeline.h"
+#include "util/stb_image.h"
 
 int main() {
     // Setup SDL
@@ -134,63 +124,8 @@ int main() {
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
 
-    /**
-     * @brief Load shaders and attach them to a pipeline program
-     */
-    uint32_t shader_program = glCreateProgram();
-    int success;
-    char info_log[1024];
-
-    // Vertex shader
-    uint32_t vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    const std::string vertex_shader_string = load_shader("./src/shaders/base.vert");
-    const char *vertex_shader_buffer = vertex_shader_string.c_str();
-    glShaderSource(vertex_shader, 1, &vertex_shader_buffer, nullptr);
-    glCompileShader(vertex_shader);
-
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(vertex_shader, 1024, nullptr, info_log);
-        std::string msg;
-        msg += "Vertex shader compilation failed.\n";
-        msg += info_log;
-        msg += '\n';
-        throw std::runtime_error(msg);
-    }
-    glAttachShader(shader_program, vertex_shader);
-
-    // Fragment shader
-    uint32_t frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    const std::string frag_shader_string = load_shader("./src/shaders/base.frag");
-    const char *frag_shader_buffer = frag_shader_string.c_str();
-    glShaderSource(frag_shader, 1, &frag_shader_buffer, nullptr);
-    glCompileShader(frag_shader);
-
-    glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(frag_shader, 1024, nullptr, info_log);
-        std::string msg;
-        msg += "Fragment shader compilation failed.\n";
-        msg += info_log;
-        msg += '\n';
-        throw std::runtime_error(msg);
-    }
-    glAttachShader(shader_program, frag_shader);
-
-    // Link the shaders to the program and destroy artifacts
-    glLinkProgram(shader_program);
-    glDeleteShader(vertex_shader);
-    glDeleteShader(frag_shader);
-
-    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shader_program, 512, NULL, info_log);
-        std::string error;
-        error += "Shader linking failed.\n";
-        error += info_log;
-        error += '\n';
-        throw std::runtime_error(error);
-    }
+    // Load pipeline programs
+    Pipeline pipeline("./src/shaders/base.vert", "./src/shaders/base.frag");
 
     /**
      * @brief Describe the model coordinate and texture coordinate data should 
@@ -271,23 +206,20 @@ int main() {
         }
 
         // Use the program with the vertex and fragment shaders
-        glUseProgram(shader_program);
+        pipeline.use();
 
         /**
          * @brief Set the uniform data
          */
         // Model transform data uniform
-        int transform_uniform_location = glGetUniformLocation(shader_program, "transform");
         glm::mat4 transform = proj * view * model;
-        glUniformMatrix4fv(transform_uniform_location, 1, GL_FALSE, glm::value_ptr(transform));
+        pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
 
         // Texture data uniform
-        int texture_uniform_location = glGetUniformLocation(shader_program, "texdata");
-        glUniform1i(texture_uniform_location, 0);
+        pipeline.set_uniform_int("texdata", 0);
         
         // Ticker counter uniform
-        int ticker_uniform_location = glGetUniformLocation(shader_program, "ticker");
-        glUniform1i(ticker_uniform_location, ticker);
+        pipeline.set_uniform_int("ticker", ticker);
 
         /**
          * @brief Bind vertex array and texture data

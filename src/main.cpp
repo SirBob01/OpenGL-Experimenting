@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -103,6 +104,18 @@ int main() {
         30, 31, 32, 
         33, 34, 35
     };
+    std::vector<glm::vec3> positions = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
 
     // Create a vertex array
     uint32_t vertex_array;
@@ -123,9 +136,6 @@ int main() {
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
-
-    // Load pipeline programs
-    Pipeline pipeline("./src/shaders/base.vert", "./src/shaders/base.frag");
 
     /**
      * @brief Describe the model coordinate and texture coordinate data should 
@@ -174,8 +184,9 @@ int main() {
     // Matrices
     glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
     glm::mat4 proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+
+    // Load pipeline programs
+    Pipeline pipeline("./src/shaders/base.vert", "./src/shaders/base.frag");
 
     /**
      * @brief Main render loop that handles updates and draw calls
@@ -211,9 +222,6 @@ int main() {
         /**
          * @brief Set the uniform data
          */
-        // Model transform data uniform
-        glm::mat4 transform = proj * view * model;
-        pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
 
         // Texture data uniform
         pipeline.set_uniform_int("texdata", 0);
@@ -229,7 +237,12 @@ int main() {
         glBindVertexArray(vertex_array);
         
         // Draw everything
-        glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
+        for (auto &position : positions) {
+            // Model transform data uniform
+            glm::mat4 transform = proj * view * glm::translate(glm::mat4(1.0), position);
+            pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
+            glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
+        }
 
         SDL_GL_SwapWindow(window);
         ticker++;

@@ -5,8 +5,8 @@ Pipeline::Pipeline(std::string vertex_shader_filename,
     program_ = glCreateProgram();
 
     // Create the shaders
-    int vertex_shader = bind_shader(vertex_shader_filename, GL_VERTEX_SHADER);
-    int fragment_shader = bind_shader(fragment_shader_filename, GL_FRAGMENT_SHADER);
+    uint32_t vertex_shader = bind_shader(vertex_shader_filename, GL_VERTEX_SHADER);
+    uint32_t fragment_shader = bind_shader(fragment_shader_filename, GL_FRAGMENT_SHADER);
     
     // Link the shader pipeline and destroy shader instances when finished
     glLinkProgram(program_);
@@ -69,16 +69,16 @@ void Pipeline::use() {
 }
 
 void Pipeline::set_uniform_matrix4(std::string identifier, float matrix[]) {
-    int uniform_location = glGetUniformLocation(program_, identifier.c_str());
+    uint32_t uniform_location = glGetUniformLocation(program_, identifier.c_str());
     glUniformMatrix4fv(uniform_location, 1, GL_FALSE, matrix);
 }
 
 void Pipeline::set_uniform_int(std::string identifier, uint32_t number) {
-    int uniform_location = glGetUniformLocation(program_, identifier.c_str());
+    uint32_t uniform_location = glGetUniformLocation(program_, identifier.c_str());
     glUniform1i(uniform_location, number);
 }
 
 void Pipeline::set_uniform_float(std::string identifier, float number) {
-    int uniform_location = glGetUniformLocation(program_, identifier.c_str());
+    uint32_t uniform_location = glGetUniformLocation(program_, identifier.c_str());
     glUniform1f(uniform_location, number);
 }

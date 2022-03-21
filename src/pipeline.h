@@ -13,7 +13,7 @@
  * Graphics pipeline configuration
  */
 class Pipeline {
-    int program_;
+    uint32_t program_;
     
     /**
      * Read shader source code from a file

@@ -238,9 +238,15 @@ int main() {
         
         // Draw everything
         for (auto &position : positions) {
-            // Model transform data uniform
-            glm::mat4 transform = proj * view * glm::translate(glm::mat4(1.0), position);
+            // Calculate the model transform
+            glm::mat4 transform = proj * view;
+            transform = glm::translate(transform, position);
+            transform = glm::rotate(transform, glm::radians(ticker * 1.0f), glm::vec3(0.5, 1.0, 0.0));
+            
+            // Set the uniform data
             pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
+            
+            // Draw
             glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
         }
 

@@ -15,6 +15,7 @@
 #include <iostream>
 #include <math.h>
 
+#include "mesh.h"
 #include "pipeline.h"
 #include "util/stb_image.h"
 
@@ -47,50 +48,50 @@ int main() {
     glViewport(0, 0, width, height);
 
     // Render vertices
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    std::vector<Vertex> vertices = {
+        { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f },
+        { 0.5f, -0.5f, -0.5f,  1.0f, 0.0f },
+        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
+        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
+        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f },
+        { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f },
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
+        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
+        { 0.5f,  0.5f,  0.5f,  1.0f, 1.0f },
+        { 0.5f,  0.5f,  0.5f,  1.0f, 1.0f },
+        { -0.5f,  0.5f,  0.5f,  0.0f, 1.0f },
+        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        { -0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { -0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
+        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
+        { -0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
 
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
+        { 0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { 0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { 0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
+        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { 0.5f, -0.5f, -0.5f,  1.0f, 1.0f },
+        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
+        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
+        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
+        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f },
+        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
+        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { -0.5f,  0.5f,  0.5f,  0.0f, 0.0f },
+        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f }
     };
-    uint32_t indices[] = {
+    std::vector<uint32_t> indices = {
         0, 1, 2, 
         3, 4, 5, 
         6, 7, 8, 
@@ -122,17 +123,7 @@ int main() {
     glGenVertexArrays(1, &vertex_array);
     glBindVertexArray(vertex_array);
 
-    // Bind and copy the vertex data to a buffer
-    uint32_t vertex_buffer;
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Bind and copy the index data to a buffer
-    uint32_t index_buffer;
-    glGenBuffers(1, &index_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    Mesh mesh(vertices, indices);
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
@@ -247,7 +238,7 @@ int main() {
             pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
             
             // Draw
-            glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
+            mesh.draw();
         }
 
         SDL_GL_SwapWindow(window);

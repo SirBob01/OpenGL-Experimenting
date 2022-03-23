@@ -14,9 +14,12 @@
 /**
  * A vertex stores its model space coodinates and 
  * texture coordinates
+ * 
+ * Data layout is essentially how it's read by the GPU in the shader
  */
 struct Vertex {
     glm::vec3 position;
+    glm::vec3 normal;
     glm::vec2 texture_coordinates;
 };
 
@@ -26,12 +29,25 @@ struct Vertex {
 class Mesh {
     std::vector<Vertex> vertices_;
     std::vector<uint32_t> indices_;
-    
+
     uint32_t vertex_buffer_;
     uint32_t index_buffer_;
 
+    /**
+     * Generate the vertex and index buffers
+     */
+    void generate_buffers();
+
 public:
     Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices);
+    Mesh(std::vector<glm::vec3> &positions, 
+         std::vector<glm::vec3> &normals, 
+         std::vector<uint32_t> &indices
+    );
+    Mesh(std::vector<glm::vec3> &positions, 
+         std::vector<glm::vec2> &texture_coordinates, 
+         std::vector<uint32_t> &indices
+    );
     ~Mesh();
 
     /**

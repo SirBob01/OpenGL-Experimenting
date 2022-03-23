@@ -5,8 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #include "util/stb_image.h"
 
@@ -16,13 +16,13 @@
 class Texture {
     uint32_t handle_;
 
-public:
+  public:
     Texture(std::string filename);
     ~Texture();
 
     /**
      * Use this texture for the current draw
-     * 
+     *
      * Activate a texture unit at an index and bind to it
      */
     void use(uint32_t index);

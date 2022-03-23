@@ -5,16 +5,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+#include <fstream>
 #include <string>
 #include <vector>
-#include <fstream>
 
 /**
  * Graphics pipeline configuration
  */
 class Pipeline {
     uint32_t program_;
-    
+
     /**
      * Read shader source code from a file
      */
@@ -25,8 +25,8 @@ class Pipeline {
      */
     uint32_t bind_shader(std::string filename, GLenum type);
 
-public:
-    Pipeline(std::string vertex_shader_filename, 
+  public:
+    Pipeline(std::string vertex_shader_filename,
              std::string fragment_shader_filename);
 
     /**

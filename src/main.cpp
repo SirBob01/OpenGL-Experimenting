@@ -187,9 +187,9 @@ int main() {
         /**
          * @brief Bind vertex array and texture data
          */
-        texture.use();
         glBindVertexArray(vertex_array);
         
+        texture.use(0);
         mesh.use();
         
         // Draw everything

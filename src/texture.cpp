@@ -32,7 +32,7 @@ Texture::~Texture() {
     glDeleteTextures(1, &handle_);
 }
 
-void Texture::use() {
-    glActiveTexture(GL_TEXTURE0);
+void Texture::use(uint32_t index) {
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, handle_);
 }

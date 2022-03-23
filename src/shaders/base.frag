@@ -8,5 +8,6 @@ uniform sampler2D texdata;
 uniform int ticker;
 
 void main() {
-    out_color = texture(texdata, texcoord);
+    vec4 texcolor = texture(texdata, texcoord);
+    out_color = texcolor;
 }

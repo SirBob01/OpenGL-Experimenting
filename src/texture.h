@@ -22,8 +22,10 @@ public:
 
     /**
      * Use this texture for the current draw
+     * 
+     * Activate a texture unit at an index and bind to it
      */
-    void use();
+    void use(uint32_t index);
 };
 
 #endif

@@ -24,10 +24,11 @@ struct Vertex {
  * Mesh object
  */
 class Mesh {
+    std::vector<Vertex> vertices_;
+    std::vector<uint32_t> indices_;
+    
     uint32_t vertex_buffer_;
     uint32_t index_buffer_;
-
-    uint32_t num_indices_;
 
 public:
     Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices);

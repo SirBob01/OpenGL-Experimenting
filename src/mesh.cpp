@@ -1,8 +1,6 @@
 #include "mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices) {
-    num_indices_ = indices.size();
-
+Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices): vertices_(vertices), indices_(indices) {
     // Bind the vertex array
     glGenBuffers(1, &vertex_buffer_);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_);
@@ -36,5 +34,5 @@ void Mesh::use() {
 }
 
 void Mesh::draw() {
-    glDrawElements(GL_TRIANGLES, num_indices_, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
 }

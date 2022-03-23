@@ -1,7 +1,7 @@
 #define SDL_MAIN_HANDLED
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "loader/glad.h"
+#include "src/loader/glad.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -15,9 +15,9 @@
 #include <iostream>
 #include <math.h>
 
-#include "mesh.h"
-#include "texture.h"
-#include "pipeline.h"
+#include "src/mesh.h"
+#include "src/texture.h"
+#include "src/pipeline.h"
 
 int main() {
     // Setup SDL

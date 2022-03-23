@@ -49,47 +49,47 @@ int main() {
 
     // Render vertices
     std::vector<Vertex> vertices = {
-        { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f },
-        { 0.5f, -0.5f, -0.5f,  1.0f, 0.0f },
-        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
-        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
-        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f },
-        { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f } },
+        { { 0.5f, -0.5f, -0.5f },  { 1.0f, 0.0f } },
+        { { 0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { 0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 0.0f } },
 
-        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
-        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
-        { 0.5f,  0.5f,  0.5f,  1.0f, 1.0f },
-        { 0.5f,  0.5f,  0.5f,  1.0f, 1.0f },
-        { -0.5f,  0.5f,  0.5f,  0.0f, 1.0f },
-        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
+        { { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
+        { { 0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f } },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 1.0f } },
+        { { -0.5f,  0.5f,  0.5f },  { 0.0f, 1.0f } },
+        { { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
 
-        { -0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
-        { -0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
-        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
-        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
-        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
-        { -0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { -0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
+        { { -0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
 
-        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
-        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
-        { 0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
-        { 0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
-        { 0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
-        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { 0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { 0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { 0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { 0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
 
-        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
-        { 0.5f, -0.5f, -0.5f,  1.0f, 1.0f },
-        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
-        { 0.5f, -0.5f,  0.5f,  1.0f, 0.0f },
-        { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f },
-        { -0.5f, -0.5f, -0.5f,  0.0f, 1.0f },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { 0.5f, -0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { 0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { 0.5f, -0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { -0.5f, -0.5f,  0.5f },  { 0.0f, 0.0f } },
+        { { -0.5f, -0.5f, -0.5f },  { 0.0f, 1.0f } },
 
-        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f },
-        { 0.5f,  0.5f, -0.5f,  1.0f, 1.0f },
-        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
-        { 0.5f,  0.5f,  0.5f,  1.0f, 0.0f },
-        { -0.5f,  0.5f,  0.5f,  0.0f, 0.0f },
-        { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f }
+        { { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } },
+        { { 0.5f,  0.5f, -0.5f },  { 1.0f, 1.0f } },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { 0.5f,  0.5f,  0.5f },  { 1.0f, 0.0f } },
+        { { -0.5f,  0.5f,  0.5f },  { 0.0f, 0.0f } },
+        { { -0.5f,  0.5f, -0.5f },  { 0.0f, 1.0f } }
     };
     std::vector<uint32_t> indices = {
         0, 1, 2, 
@@ -127,18 +127,6 @@ int main() {
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
-
-    /**
-     * @brief Describe the model coordinate and texture coordinate data should 
-     * be interpreted in GPU memory for each vertex
-     */
-    // Model coordinates
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
-    
-    // Texture coordinates
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
     // Unbind vertex array
     glBindVertexArray(0);
@@ -227,6 +215,8 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(vertex_array);
         
+        mesh.use();
+        
         // Draw everything
         for (auto &position : positions) {
             // Calculate the model transform
@@ -244,6 +234,8 @@ int main() {
         SDL_GL_SwapWindow(window);
         ticker++;
     }
+    // Destroy active vertex arrays
+    glDeleteVertexArrays(1, &vertex_array);
 
     return 0;
 }

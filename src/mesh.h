@@ -1,24 +1,23 @@
 #ifndef RENDER_MESH_H_
 #define RENDER_MESH_H_
 
+#include "loader/glad.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+
+#include <glm/glm.hpp>
 
 #include <vector>
 #include <fstream>
 
-#include "loader/glad.h"
-#include <SDL2/SDL_opengl.h>
 
 /**
  * A vertex stores its model space coodinates and 
  * texture coordinates
  */
 struct Vertex {
-    // Model space coordinates
-    float x, y, z;
-
-    // Texture coordinates
-    float u, v;
+    glm::vec3 position;
+    glm::vec2 texture_coordinates;
 };
 
 /**
@@ -32,6 +31,7 @@ class Mesh {
 
 public:
     Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices);
+    ~Mesh();
 
     /**
      * Bind the vertex and index buffers to the current context

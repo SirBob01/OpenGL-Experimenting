@@ -11,6 +11,8 @@
 
 /**
  * Graphics pipeline configuration
+ * 
+ * Attach a vertex shader and fragment shader
  */
 class Pipeline {
     uint32_t program_;

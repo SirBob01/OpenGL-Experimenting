@@ -26,46 +26,14 @@ Mesh::Mesh(std::vector<glm::vec3> &positions,
     generate_buffers();
 }
 
-Mesh::~Mesh() {
-    glDeleteBuffers(1, &vertex_buffer_);
-    glDeleteBuffers(1, &index_buffer_);
-}
-
 void Mesh::generate_buffers() {
-    // Bind the vertex array
-    glGenBuffers(1, &vertex_buffer_);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(),
-                 vertices_.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // Bind the index array
-    glGenBuffers(1, &index_buffer_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * indices_.size(),
-                 indices_.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    vertex_buffer_ = std::make_unique<VertexBuffer>(vertices_);
+    index_buffer_ = std::make_unique<IndexBuffer>(indices_);
 }
 
 void Mesh::use() {
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_);
-
-    // Map the data partitions of each vertex to attribute pointers
-    // Model space coodinates (x, y, z)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)0);
-    glEnableVertexAttribArray(0);
-
-    // Normal vector (x, y, z)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // Texture coordinates (u, v)
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                          (void *)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    vertex_buffer_->bind();
+    index_buffer_->bind();
 }
 
 void Mesh::draw() {

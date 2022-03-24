@@ -8,19 +8,12 @@
 #include <glm/glm.hpp>
 
 #include <fstream>
+#include <memory>
 #include <vector>
 
-/**
- * A vertex stores its model space coodinates and
- * texture coordinates
- *
- * Data layout is essentially how it's read by the GPU in the shader
- */
-struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 texture_coordinates;
-};
+#include "indexbuffer.h"
+#include "vertex.h"
+#include "vertexbuffer.h"
 
 /**
  * Mesh object
@@ -29,8 +22,8 @@ class Mesh {
     std::vector<Vertex> vertices_;
     std::vector<uint32_t> indices_;
 
-    uint32_t vertex_buffer_;
-    uint32_t index_buffer_;
+    std::unique_ptr<VertexBuffer> vertex_buffer_;
+    std::unique_ptr<IndexBuffer> index_buffer_;
 
     /**
      * Generate the vertex and index buffers
@@ -44,7 +37,6 @@ class Mesh {
     Mesh(std::vector<glm::vec3> &positions,
          std::vector<glm::vec2> &texture_coordinates,
          std::vector<uint32_t> &indices);
-    ~Mesh();
 
     /**
      * Bind the vertex and index buffers to the current context

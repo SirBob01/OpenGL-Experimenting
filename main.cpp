@@ -17,6 +17,7 @@
 
 #include "src/mesh.h"
 #include "src/pipeline.h"
+#include "src/renderstate.h"
 #include "src/texture.h"
 
 int main() {
@@ -86,22 +87,18 @@ int main() {
         glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
     // Create a vertex array
-    uint32_t vertex_array;
-    glGenVertexArrays(1, &vertex_array);
-    glBindVertexArray(vertex_array);
+    RenderState state;
+    state.bind();
 
     Mesh mesh(vertices, texture_coordinates, indices);
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
 
-    // Unbind vertex array
-    glBindVertexArray(0);
-
     /**
      * @brief How to handle textures
      */
-    Texture texture("./assets/wall.jpg");
+    Texture texture("../assets/wall.jpg");
 
     // Matrices
     glm::mat4 view =
@@ -110,7 +107,7 @@ int main() {
         glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
     // Load pipeline programs
-    Pipeline pipeline("./src/shaders/base.vert", "./src/shaders/base.frag");
+    Pipeline pipeline("../src/shaders/base.vert", "../src/shaders/base.frag");
 
     /**
      * @brief Main render loop that handles updates and draw calls
@@ -144,22 +141,14 @@ int main() {
         // Use the program with the vertex and fragment shaders
         pipeline.use();
 
-        /**
-         * @brief Set the uniform data
-         */
-
-        // Texture data uniform
+        // Set uniforms
         pipeline.set_uniform_int("texdata", 0);
-
-        // Ticker counter uniform
         pipeline.set_uniform_int("ticker", ticker);
 
-        /**
-         * @brief Bind vertex array and texture data
-         */
-        glBindVertexArray(vertex_array);
-
+        // Set texture
         texture.use(0);
+
+        // Set mesh
         mesh.use();
 
         // Draw everything
@@ -181,8 +170,6 @@ int main() {
         SDL_GL_SwapWindow(window);
         ticker++;
     }
-    // Destroy active vertex arrays
-    glDeleteVertexArrays(1, &vertex_array);
 
     return 0;
 }

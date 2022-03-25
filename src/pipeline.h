@@ -7,15 +7,17 @@
 
 #include <fstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 /**
  * Graphics pipeline configuration
- * 
+ *
  * Attach a vertex shader and fragment shader
  */
 class Pipeline {
     uint32_t program_;
+    std::unordered_map<std::string, uint32_t> cache_;
 
     /**
      * Read shader source code from a file
@@ -26,6 +28,11 @@ class Pipeline {
      * Bind a shader program to the pipeline program
      */
     uint32_t bind_shader(std::string filename, GLenum type);
+
+    /**
+     * Get the location of a uniform, accessing cached results if necessary
+     */
+    uint32_t get_uniform_location(std::string identifier);
 
   public:
     Pipeline(std::string vertex_shader_filename,

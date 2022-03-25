@@ -66,22 +66,23 @@ uint32_t Pipeline::bind_shader(std::string filename, GLenum type) {
     return shader;
 }
 
+uint32_t Pipeline::get_uniform_location(std::string identifier) {
+    if (cache_.find(identifier) == cache_.end()) {
+        cache_[identifier] = glGetUniformLocation(program_, identifier.c_str());
+    }
+    return cache_[identifier];
+}
+
 void Pipeline::use() { glUseProgram(program_); }
 
 void Pipeline::set_uniform_matrix4(std::string identifier, float matrix[]) {
-    uint32_t uniform_location =
-        glGetUniformLocation(program_, identifier.c_str());
-    glUniformMatrix4fv(uniform_location, 1, GL_FALSE, matrix);
+    glUniformMatrix4fv(get_uniform_location(identifier), 1, GL_FALSE, matrix);
 }
 
 void Pipeline::set_uniform_int(std::string identifier, uint32_t number) {
-    uint32_t uniform_location =
-        glGetUniformLocation(program_, identifier.c_str());
-    glUniform1i(uniform_location, number);
+    glUniform1i(get_uniform_location(identifier), number);
 }
 
 void Pipeline::set_uniform_float(std::string identifier, float number) {
-    uint32_t uniform_location =
-        glGetUniformLocation(program_, identifier.c_str());
-    glUniform1f(uniform_location, number);
+    glUniform1f(get_uniform_location(identifier), number);
 }

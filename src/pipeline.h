@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 /**
@@ -18,6 +19,7 @@
 class Pipeline {
     uint32_t program_;
     std::unordered_map<std::string, uint32_t> cache_;
+    std::pair<std::string, std::string> key_;
 
     /**
      * Read shader source code from a file
@@ -42,6 +44,12 @@ class Pipeline {
      * Use the pipeline
      */
     void use();
+
+    /**
+     * Get a unique key for this pipeline to efficiently draw objects
+     * per pipeline, minimizing switching between shader programs
+     */
+    const std::pair<std::string, std::string> &get_key();
 
     /**
      * Set a uniform 4x4 matrix

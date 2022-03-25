@@ -3,6 +3,7 @@
 Pipeline::Pipeline(std::string vertex_shader_filename,
                    std::string fragment_shader_filename) {
     program_ = glCreateProgram();
+    key_ = std::make_pair(vertex_shader_filename, fragment_shader_filename);
 
     // Create the shaders
     uint32_t vertex_shader =
@@ -74,6 +75,8 @@ uint32_t Pipeline::get_uniform_location(std::string identifier) {
 }
 
 void Pipeline::use() { glUseProgram(program_); }
+
+const std::pair<std::string, std::string> &Pipeline::get_key() { return key_; }
 
 void Pipeline::set_uniform_matrix4(std::string identifier, float matrix[]) {
     glUniformMatrix4fv(get_uniform_location(identifier), 1, GL_FALSE, matrix);

@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "util/stb_image.h"
+#include "vendor/stb_image.h"
 
 /**
  * Texture object
@@ -25,7 +25,12 @@ class Texture {
      *
      * Activate a texture unit at an index and bind to it
      */
-    void use(uint32_t index);
+    void bind(uint32_t index);
+
+    /**
+     * Stop using this texture
+     */
+    void unbind();
 };
 
 #endif

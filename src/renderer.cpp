@@ -51,7 +51,20 @@ void Renderer::use_material(Material &material, glm::mat4 &transform) {
         TextureDescriptor &desc = material.textures[i];
         Texture &texture = get_texture(desc.image_filename);
         texture.bind(i);
-        pipeline.set_uniform_int(texture_mapping_identifiers[desc.mapping], i);
+
+        switch (desc.mapping) {
+        case TextureMapping::Diffuse:
+            pipeline.set_uniform_int("diffuse", i);
+            break;
+        case TextureMapping::Specular:
+            pipeline.set_uniform_int("specular", i);
+            break;
+        case TextureMapping::Normal:
+            pipeline.set_uniform_int("normal", i);
+            break;
+        default:
+            break;
+        }
     }
     material.set_uniforms(pipeline);
     pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));

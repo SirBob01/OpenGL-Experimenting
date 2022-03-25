@@ -88,17 +88,19 @@ int main() {
     // Create the renderer
     Renderer renderer;
 
-    // Create the mesh and material
+    // Create the mesh
     Mesh mesh(vertices, texture_coordinates, indices);
 
-    TextureDescriptor specular;
-    specular.image_filename = "../assets/wall.jpg";
-    specular.mapping = TextureMapping::Specular;
+    // Create a diffuse (color) texture
+    TextureDescriptor diffuse;
+    diffuse.image_filename = "../assets/wall.jpg";
+    diffuse.mapping = TextureMapping::Diffuse;
 
+    // Create a material
     Material material;
-    material.textures = {specular};
-    material.vertex_shader_filename = "../src/shaders/base.vert";
-    material.fragment_shader_filename = "../src/shaders/base.frag";
+    material.textures = {diffuse};
+    material.vertex_shader_filename = "../src/shaders/default.vert";
+    material.fragment_shader_filename = "../src/shaders/default.frag";
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);

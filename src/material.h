@@ -11,9 +11,11 @@
 /**
  * Enumerates the different types of texture mappings
  */
-const std::array<std::string, 3> texture_mapping_identifiers = {
-    "specular", "diffuse", "normal"};
-enum TextureMapping { Specular = 0, Diffuse = 1, Normal = 2 };
+enum TextureMapping {
+    Diffuse = 0,  // Colors each point on the mesh (standard texture)
+    Specular = 1, // Defines how shiny each point on the mesh is
+    Normal = 2    // Defines physical texture (e.g., bumpiness or smoothness)
+};
 
 /**
  * Describes a unique texture

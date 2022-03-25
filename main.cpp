@@ -15,10 +15,9 @@
 #include <sstream>
 #include <vector>
 
+#include "src/material.h"
 #include "src/mesh.h"
-#include "src/pipeline.h"
-#include "src/renderstate.h"
-#include "src/texture.h"
+#include "src/renderer.h"
 
 int main() {
     // Setup SDL
@@ -86,19 +85,23 @@ int main() {
         glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
         glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
-    // Create a vertex array
-    RenderState state;
-    state.bind();
+    // Create the renderer
+    Renderer renderer;
 
+    // Create the mesh and material
     Mesh mesh(vertices, texture_coordinates, indices);
+
+    TextureDescriptor specular;
+    specular.image_filename = "../assets/wall.jpg";
+    specular.mapping = TextureMapping::Specular;
+
+    Material material;
+    material.textures = {specular};
+    material.vertex_shader_filename = "../src/shaders/base.vert";
+    material.fragment_shader_filename = "../src/shaders/base.frag";
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
-
-    /**
-     * @brief How to handle textures
-     */
-    Texture texture("../assets/wall.jpg");
 
     // Matrices
     glm::mat4 view =
@@ -106,17 +109,12 @@ int main() {
     glm::mat4 proj =
         glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-    // Load pipeline programs
-    Pipeline pipeline("../src/shaders/base.vert", "../src/shaders/base.frag");
-
-    /**
-     * @brief Main render loop that handles updates and draw calls
-     */
     bool running = true;
     int ticker = 0;
 
     glEnable(GL_DEPTH_TEST);
 
+    // Main render loop
     while (running) {
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -138,19 +136,6 @@ int main() {
             }
         }
 
-        // Use the program with the vertex and fragment shaders
-        pipeline.use();
-
-        // Set uniforms
-        pipeline.set_uniform_int("texdata", 0);
-        pipeline.set_uniform_int("ticker", ticker);
-
-        // Set texture
-        texture.use(0);
-
-        // Set mesh
-        mesh.use();
-
         // Draw everything
         for (auto &position : positions) {
             // Calculate the model transform
@@ -159,12 +144,8 @@ int main() {
             transform = glm::rotate(transform, glm::radians(ticker * 1.0f),
                                     glm::vec3(0.5, 1.0, 0.0));
 
-            // Set the uniform data
-            pipeline.set_uniform_matrix4("transform",
-                                         glm::value_ptr(transform));
-
             // Draw
-            mesh.draw();
+            renderer.draw(mesh, material, transform);
         }
 
         SDL_GL_SwapWindow(window);

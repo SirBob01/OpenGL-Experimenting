@@ -4,10 +4,11 @@ in vec2 texcoord;
 
 out vec4 out_color;
 
-uniform sampler2D texdata;
-uniform int ticker;
+uniform sampler2D specular;
+uniform sampler2D diffuse;
+uniform sampler2D normal;
 
 void main() {
-    vec4 texcolor = texture(texdata, texcoord);
+    vec4 texcolor = texture(specular, texcoord);
     out_color = texcolor;
 }

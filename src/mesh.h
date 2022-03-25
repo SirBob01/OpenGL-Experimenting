@@ -19,16 +19,14 @@
  * Mesh object
  */
 class Mesh {
-    std::vector<Vertex> vertices_;
-    std::vector<uint32_t> indices_;
-
     std::unique_ptr<VertexBuffer> vertex_buffer_;
     std::unique_ptr<IndexBuffer> index_buffer_;
 
     /**
      * Generate the vertex and index buffers
      */
-    void generate_buffers();
+    void generate_buffers(std::vector<Vertex> &vertices,
+                          std::vector<uint32_t> &indices);
 
   public:
     Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices);
@@ -41,12 +39,12 @@ class Mesh {
     /**
      * Bind the vertex and index buffers to the current context
      */
-    void use();
+    void bind();
 
     /**
-     * Draw this mesh and add it to the currently active pipeline
+     * Get the number of indices in the buffer
      */
-    void draw();
+    size_t get_index_count();
 };
 
 #endif

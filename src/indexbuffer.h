@@ -31,7 +31,7 @@ class IndexBuffer {
     /**
      * Get the number of indices in the buffer
      */
-    size_t get_count();
+    size_t get_index_count();
 };
 
 #endif

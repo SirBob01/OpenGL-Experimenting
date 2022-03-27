@@ -134,12 +134,14 @@ int main() {
     // Create the materials
     Material crate(vertex_shader, fragment_shader);
     crate.set_texture(diffuse, TextureMapping::Diffuse);
+    crate.set_backface_cull(false);
 
-    Material skybox(skybox_vertex_shader, skybox_fragment_shader);
-    skybox.set_cubemap("skybox", skybox_texture);
+    Material skybox_material(skybox_vertex_shader, skybox_fragment_shader);
+    skybox_material.set_depth_write(false);
+    skybox_material.set_cubemap("skybox", skybox_texture);
 
     // Set polygon draw mode
-    glPolygonMode(GL_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Matrices
     glm::mat4 view =
@@ -174,13 +176,11 @@ int main() {
 
         // Draw the skybox
         // TODO: Move flags (e.g. DepthMask, CullingMode, etc.) to Material
-        glDepthMask(false);
         glm::mat4 skybox_transform = proj;
         skybox_transform =
             glm::rotate(skybox_transform, glm::radians(ticker * 0.2f),
                         glm::vec3(0.5, 0.4, 0.3));
-        renderer.draw(skybox_mesh, skybox, skybox_transform);
-        glDepthMask(true);
+        renderer.draw(skybox_mesh, skybox_material, skybox_transform);
 
         // Draw everything
         for (auto &position : positions) {

@@ -20,6 +20,10 @@ Material::Material(Shader &vertex_shader, Shader &fragment_shader) {
         error += '\n';
         throw std::runtime_error(error);
     }
+
+    // Default flags
+    depth_write_ = true;
+    backface_cull_ = true;
 }
 
 Material::~Material() { glDeleteProgram(handle_); }
@@ -61,6 +65,14 @@ void Material::bind() {
         index++;
     }
 }
+
+bool Material::get_depth_write() { return depth_write_; }
+
+bool Material::get_backface_cull() { return backface_cull_; }
+
+void Material::set_depth_write(bool value) { depth_write_ = value; }
+
+void Material::set_backface_cull(bool value) { backface_cull_ = value; }
 
 void Material::set_integer(std::string identifier, int value) {
     int location = get_uniform_location(identifier);

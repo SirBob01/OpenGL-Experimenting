@@ -36,6 +36,15 @@ void Renderer::draw(Mesh &mesh, Material &material, glm::mat4 &transform) {
     material.set_matrix4("transform", transform);
     material.bind();
 
+    // Set states based on material flags
+    if (material.get_backface_cull()) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+    } else {
+        glDisable(GL_CULL_FACE);
+    }
+    glDepthMask(material.get_depth_write());
+
     // Draw call
     glDrawElements(GL_TRIANGLES, mesh.get_index_count(), GL_UNSIGNED_INT, 0);
 }

@@ -32,6 +32,10 @@ class Material : public Resource {
     std::unordered_map<int, uint32_t> texture_values_;
     std::unordered_map<int, uint32_t> cubemap_values_;
 
+    // Flags
+    bool depth_write_;
+    bool backface_cull_;
+
     /**
      * Get the location of a uniform, accessing cached results if necessary
      */
@@ -45,6 +49,26 @@ class Material : public Resource {
      * Use the material
      */
     void bind();
+
+    /**
+     * Get the depth write flag
+     */
+    bool get_depth_write();
+
+    /**
+     * Get the backface cull flag
+     */
+    bool get_backface_cull();
+
+    /**
+     * Set the flag if rendering should write to the depth buffer
+     */
+    void set_depth_write(bool value);
+
+    /**
+     * Set the flag if the renderer should cull back faces
+     */
+    void set_backface_cull(bool value);
 
     /**
      * Set an integer uniform

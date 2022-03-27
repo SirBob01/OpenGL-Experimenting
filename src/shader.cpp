@@ -44,6 +44,9 @@ const std::vector<char> Shader::read_from_disk(std::string filename) {
     file.seekg(0);
     file.read(&bytes[0], size);
     file.close();
+
+    // Make sure file is null terminated
+    bytes.push_back(0);
     return bytes;
 }
 

@@ -5,8 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "util/typeid.h"
-
 /**
  * Describes a render resource
  */

@@ -24,10 +24,14 @@ Material::Material(Shader &vertex_shader, Shader &fragment_shader) {
 
 Material::~Material() { glDeleteProgram(handle_); }
 
-uint32_t Material::get_uniform_location(std::string identifier) {
+int Material::get_uniform_location(std::string identifier) {
     if (location_cache_.find(identifier) == location_cache_.end()) {
         location_cache_[identifier] =
             glGetUniformLocation(handle_, identifier.c_str());
+        if (location_cache_[identifier] < 0) {
+            throw std::runtime_error("GLSL uniform identifier `" + identifier +
+                                     "` could not be found");
+        }
     }
     return location_cache_[identifier];
 }
@@ -59,22 +63,22 @@ void Material::bind() {
 }
 
 void Material::set_integer(std::string identifier, int value) {
-    uint32_t location = get_uniform_location(identifier);
+    int location = get_uniform_location(identifier);
     integer_values_[location] = value;
 }
 
 void Material::set_float(std::string identifier, float value) {
-    uint32_t location = get_uniform_location(identifier);
+    int location = get_uniform_location(identifier);
     float_values_[location] = value;
 }
 
 void Material::set_matrix4(std::string identifier, glm::mat4 &value) {
-    uint32_t location = get_uniform_location(identifier);
+    int location = get_uniform_location(identifier);
     mat4_values_[location] = value;
 }
 
 void Material::set_texture(Texture &texture, TextureMapping mapping) {
-    uint32_t location;
+    int location;
     switch (mapping) {
     case TextureMapping::Diffuse:
         location = get_uniform_location("diffuse");
@@ -93,6 +97,6 @@ void Material::set_texture(Texture &texture, TextureMapping mapping) {
 }
 
 void Material::set_cubemap(std::string identifier, Cubemap &cubemap) {
-    uint32_t location = get_uniform_location(identifier);
+    int location = get_uniform_location(identifier);
     cubemap_values_[location] = cubemap.get_handle();
 }

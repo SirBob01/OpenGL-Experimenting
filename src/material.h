@@ -23,19 +23,19 @@
  * Attach a vertex shader and fragment shader
  */
 class Material : public Resource {
-    std::unordered_map<std::string, uint32_t> location_cache_;
+    std::unordered_map<std::string, int> location_cache_;
 
     // Value maps
-    std::unordered_map<uint32_t, int> integer_values_;
-    std::unordered_map<uint32_t, float> float_values_;
-    std::unordered_map<uint32_t, glm::mat4> mat4_values_;
-    std::unordered_map<uint32_t, uint32_t> texture_values_;
-    std::unordered_map<uint32_t, uint32_t> cubemap_values_;
+    std::unordered_map<int, int> integer_values_;
+    std::unordered_map<int, float> float_values_;
+    std::unordered_map<int, glm::mat4> mat4_values_;
+    std::unordered_map<int, uint32_t> texture_values_;
+    std::unordered_map<int, uint32_t> cubemap_values_;
 
     /**
      * Get the location of a uniform, accessing cached results if necessary
      */
-    uint32_t get_uniform_location(std::string identifier);
+    int get_uniform_location(std::string identifier);
 
   public:
     Material(Shader &vertex_shader, Shader &fragment_shader);

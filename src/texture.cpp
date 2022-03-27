@@ -34,10 +34,3 @@ Texture::Texture(std::string filename) {
 }
 
 Texture::~Texture() { glDeleteTextures(1, &handle_); }
-
-void Texture::bind(uint32_t index) {
-    glActiveTexture(GL_TEXTURE0 + index);
-    glBindTexture(GL_TEXTURE_2D, handle_);
-}
-
-void Texture::unbind() { glBindTexture(GL_TEXTURE_2D, 0); }

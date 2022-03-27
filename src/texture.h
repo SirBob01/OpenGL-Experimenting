@@ -8,27 +8,24 @@
 #include <stdexcept>
 #include <string>
 
+#include "resource.h"
+
+/**
+ * Enumerates the different types of texture mappings
+ */
+enum class TextureMapping {
+    Diffuse = 0,  // Colors each point on the mesh (standard texture)
+    Specular = 1, // Defines how shiny each point on the mesh is
+    Normal = 2    // Defines physical texture (e.g., bumpiness or smoothness)
+};
+
 /**
  * Texture object
  */
-class Texture {
-    uint32_t handle_;
-
+class Texture : public Resource {
   public:
     Texture(std::string filename);
     ~Texture();
-
-    /**
-     * Use this texture for the current draw
-     *
-     * Activate a texture unit at an index and bind to it
-     */
-    void bind(uint32_t index);
-
-    /**
-     * Stop using this texture
-     */
-    void unbind();
 };
 
 #endif

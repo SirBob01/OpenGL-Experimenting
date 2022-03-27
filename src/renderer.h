@@ -14,7 +14,7 @@
 #include "cubemap.h"
 #include "material.h"
 #include "mesh.h"
-#include "pipeline.h"
+#include "resource.h"
 #include "texture.h"
 
 /**
@@ -22,37 +22,13 @@
  */
 class Renderer {
     uint32_t vao_handle_;
-    std::unordered_map<std::string, std::unique_ptr<Pipeline>> pipelines_;
-    std::unordered_map<std::string, std::unique_ptr<Texture>> textures_;
-    std::unordered_map<std::string, std::unique_ptr<Cubemap>> cubemaps_;
 
     bool buffer_bound_;
-
-    /**
-     * Get a cached pipeline
-     */
-    Pipeline &get_pipeline(std::string vertex_shader_filename,
-                           std::string fragment_shader_filename);
-
-    /**
-     * Get a cached texture
-     */
-    Texture &get_texture(std::string image_filename);
-
-    /**
-     * Get a cached cubemap
-     */
-    Cubemap &get_cubemap(std::vector<std::string> &cubemap_image_filenames);
 
     /**
      * Bind the context
      */
     void bind();
-
-    /**
-     * Use a provided material
-     */
-    void use_material(Material &material, glm::mat4 &transform);
 
   public:
     Renderer();

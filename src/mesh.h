@@ -1,5 +1,5 @@
-#ifndef RENDER_MESH_H_
-#define RENDER_MESH_H_
+#ifndef MESH_H_
+#define MESH_H_
 
 #include "loader/glad.h"
 #include <SDL2/SDL.h>
@@ -11,16 +11,17 @@
 #include <memory>
 #include <vector>
 
-#include "indexbuffer.h"
+#include "buffer.h"
 #include "vertex.h"
-#include "vertexbuffer.h"
 
 /**
  * Mesh object
  */
 class Mesh {
-    std::unique_ptr<VertexBuffer> vertex_buffer_;
-    std::unique_ptr<IndexBuffer> index_buffer_;
+    std::unique_ptr<Buffer<Vertex>> vertex_buffer_;
+    std::unique_ptr<Buffer<uint32_t>> index_buffer_;
+
+    uint32_t index_count_;
 
     /**
      * Generate the vertex and index buffers

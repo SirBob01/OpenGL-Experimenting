@@ -9,14 +9,13 @@
 #include <string>
 #include <vector>
 
+#include "resource.h"
 #include "vendor/stb_image.h"
 
 /**
  * Cubemap object
  */
-class Cubemap {
-    uint32_t handle_;
-
+class Cubemap : public Resource {
   public:
     Cubemap(std::vector<std::string> &face_image_filenames);
     ~Cubemap();

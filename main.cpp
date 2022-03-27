@@ -91,15 +91,16 @@ int main() {
     Mesh mesh(vertices, texture_coordinates, indices);
 
     // Create a diffuse (color) texture
-    TextureDescriptor diffuse;
-    diffuse.image_filename = "../assets/wall.jpg";
-    diffuse.mapping = TextureMapping::Diffuse;
+    Texture diffuse("../assets/wall.jpg");
+
+    // Create the shaders
+    Shader vertex_shader("../src/shaders/default.vert", ShaderStage::Vertex);
+    Shader fragment_shader("../src/shaders/default.frag",
+                           ShaderStage::Fragment);
 
     // Create a material
-    Material material;
-    material.textures = {diffuse};
-    material.vertex_shader_filename = "../src/shaders/default.vert";
-    material.fragment_shader_filename = "../src/shaders/default.frag";
+    Material material(vertex_shader, fragment_shader);
+    material.set_texture(diffuse, TextureMapping::Diffuse);
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);

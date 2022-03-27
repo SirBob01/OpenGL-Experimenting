@@ -19,16 +19,6 @@ class Cubemap : public Resource {
   public:
     Cubemap(std::vector<std::string> &face_image_filenames);
     ~Cubemap();
-
-    /**
-     * Use this cubemap for the current draw
-     */
-    void bind(uint32_t index);
-
-    /**
-     * Unbind this cubemap
-     */
-    void unbind();
 };
 
 #endif

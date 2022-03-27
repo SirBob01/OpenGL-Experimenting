@@ -12,6 +12,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "cubemap.h"
 #include "resource.h"
 #include "shader.h"
 #include "texture.h"
@@ -29,6 +30,7 @@ class Material : public Resource {
     std::unordered_map<uint32_t, float> float_values_;
     std::unordered_map<uint32_t, glm::mat4> mat4_values_;
     std::unordered_map<uint32_t, uint32_t> texture_values_;
+    std::unordered_map<uint32_t, uint32_t> cubemap_values_;
 
     /**
      * Get the location of a uniform, accessing cached results if necessary
@@ -63,6 +65,11 @@ class Material : public Resource {
      * Set a texture
      */
     void set_texture(Texture &texture, TextureMapping mapping);
+
+    /**
+     * Set a cubemap
+     */
+    void set_cubemap(std::string identifier, Cubemap &cubemap);
 };
 
 #endif

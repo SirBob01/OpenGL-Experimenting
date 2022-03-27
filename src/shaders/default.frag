@@ -9,6 +9,6 @@ uniform sampler2D diffuse;
 uniform sampler2D normal;
 
 void main() {
-    vec4 texcolor = texture(specular, texcoord);
+    vec4 texcolor = texture(diffuse, texcoord);
     out_color = texcolor;
 }

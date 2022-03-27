@@ -17,6 +17,8 @@
 #include "src/material.h"
 #include "src/mesh.h"
 #include "src/renderer.h"
+#include "src/resource.h"
+#include "src/texture.h"
 
 int main() {
     // Setup SDL
@@ -100,7 +102,7 @@ int main() {
 
     // Create a material
     Material material(vertex_shader, fragment_shader);
-    material.set_texture(diffuse, TextureMapping::Diffuse);
+    // material.set_texture(diffuse, TextureMapping::Diffuse);
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);

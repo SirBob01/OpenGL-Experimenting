@@ -44,10 +44,16 @@ void Material::bind() {
         glUniformMatrix4fv(pair.first, 1, false, glm::value_ptr(pair.second));
     }
 
-    int index = 0;
+    int index = 3;
     for (auto &pair : texture_values_) {
         glActiveTexture(GL_TEXTURE0 + index);
         glBindTexture(GL_TEXTURE_2D, pair.second);
+        glUniform1i(pair.first, index);
+        index++;
+    }
+    for (auto &pair : cubemap_values_) {
+        glActiveTexture(GL_TEXTURE0 + index);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, pair.second);
         index++;
     }
 }
@@ -84,4 +90,9 @@ void Material::set_texture(Texture &texture, TextureMapping mapping) {
         break;
     }
     texture_values_[location] = texture.get_handle();
+}
+
+void Material::set_cubemap(std::string identifier, Cubemap &cubemap) {
+    uint32_t location = get_uniform_location(identifier);
+    cubemap_values_[location] = cubemap.get_handle();
 }

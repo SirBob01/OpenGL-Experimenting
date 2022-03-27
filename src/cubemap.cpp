@@ -34,10 +34,3 @@ Cubemap::Cubemap(std::vector<std::string> &face_image_filenames) {
 }
 
 Cubemap::~Cubemap() { glDeleteTextures(1, &handle_); }
-
-void Cubemap::bind(uint32_t index) {
-    glActiveTexture(GL_TEXTURE0 + index);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
-}
-
-void Cubemap::unbind() { glBindTexture(GL_TEXTURE_CUBE_MAP, 0); }

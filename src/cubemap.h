@@ -5,21 +5,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-#include <array>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "vendor/stb_image.h"
 
 /**
  * Cubemap object
  */
-class CubeMap {
+class Cubemap {
     uint32_t handle_;
 
   public:
-    CubeMap(std::array<std::string, 6> face_image_filenames);
-    ~CubeMap();
+    Cubemap(std::vector<std::string> &face_image_filenames);
+    ~Cubemap();
 
     /**
      * Use this cubemap for the current draw

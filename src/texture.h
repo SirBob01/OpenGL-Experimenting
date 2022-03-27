@@ -8,8 +8,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "vendor/stb_image.h"
-
 /**
  * Texture object
  */

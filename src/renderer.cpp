@@ -42,11 +42,25 @@ Texture &Renderer::get_texture(std::string image_filename) {
     return *textures_[image_filename];
 }
 
+Cubemap &
+Renderer::get_cubemap(std::vector<std::string> &cubemap_image_filenames) {
+    std::string key;
+    for (std::string &str : cubemap_image_filenames) {
+        key.append(str);
+    }
+    if (cubemaps_.find(key) == cubemaps_.end()) {
+        cubemaps_[key] = std::make_unique<Cubemap>(cubemap_image_filenames);
+    }
+    return *cubemaps_[key];
+}
+
 void Renderer::use_material(Material &material, glm::mat4 &transform) {
     Pipeline &pipeline = get_pipeline(material.vertex_shader_filename,
                                       material.fragment_shader_filename);
 
     pipeline.bind();
+
+    // Bind the textures
     for (int i = 0; i < material.textures.size(); i++) {
         TextureDescriptor &desc = material.textures[i];
         Texture &texture = get_texture(desc.image_filename);
@@ -66,6 +80,16 @@ void Renderer::use_material(Material &material, glm::mat4 &transform) {
             break;
         }
     }
+
+    // Bind the cubemap
+    if (material.cubemap_image_filenames.size() == 6) {
+        Cubemap &cubemap = get_cubemap(material.cubemap_image_filenames);
+        cubemap.bind(material.textures.size() + 1);
+    } else if (material.cubemap_image_filenames.size() > 0) {
+        throw std::runtime_error(
+            "Invalid number of images provided for cubemap");
+    }
+
     material.set_uniforms(pipeline);
     pipeline.set_uniform_matrix4("transform", glm::value_ptr(transform));
 }

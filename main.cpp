@@ -1,5 +1,4 @@
 #define SDL_MAIN_HANDLED
-#define STB_IMAGE_IMPLEMENTATION
 
 #include "src/loader/glad.h"
 #include <SDL2/SDL.h>

@@ -1,4 +1,6 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "texture.h"
+#include "vendor/stb_image.h"
 
 Texture::Texture(std::string filename) {
     // Create a unique handle for the texture
@@ -19,7 +21,7 @@ Texture::Texture(std::string filename) {
     unsigned char *data =
         stbi_load(filename.c_str(), &tex_width, &tex_height, &tex_channels, 0);
     if (!data) {
-        throw std::runtime_error("Failed to load texture");
+        throw std::runtime_error("Failed to load texture: " + filename);
     }
 
     // Bind pixel data to texture and generate a mipmap

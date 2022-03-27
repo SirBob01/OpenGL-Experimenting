@@ -1,6 +1,6 @@
 #include "cubemap.h"
 
-CubeMap::CubeMap(std::array<std::string, 6> face_image_filenames) {
+Cubemap::Cubemap(std::vector<std::string> &face_image_filenames) {
     // Create a unique handle for the texture
     glGenTextures(1, &handle_);
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
@@ -16,7 +16,7 @@ CubeMap::CubeMap(std::array<std::string, 6> face_image_filenames) {
 
     // Load raw pixel data
     int tex_width, tex_height, tex_channels;
-    for (int i = 0; i < face_image_filenames.size(); i++) {
+    for (int i = 0; i < 6; i++) {
         std::string &filename = face_image_filenames[i];
         unsigned char *data = stbi_load(filename.c_str(), &tex_width,
                                         &tex_height, &tex_channels, 0);
@@ -33,11 +33,11 @@ CubeMap::CubeMap(std::array<std::string, 6> face_image_filenames) {
     }
 }
 
-CubeMap::~CubeMap() { glDeleteTextures(1, &handle_); }
+Cubemap::~Cubemap() { glDeleteTextures(1, &handle_); }
 
-void CubeMap::bind(uint32_t index) {
+void Cubemap::bind(uint32_t index) {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
 }
 
-void CubeMap::unbind() { glBindTexture(GL_TEXTURE_CUBE_MAP, 0); }
+void Cubemap::unbind() { glBindTexture(GL_TEXTURE_CUBE_MAP, 0); }

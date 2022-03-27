@@ -8,7 +8,10 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <memory>
+#include <unordered_map>
+#include <vector>
 
+#include "cubemap.h"
 #include "material.h"
 #include "mesh.h"
 #include "pipeline.h"
@@ -21,6 +24,8 @@ class Renderer {
     uint32_t vao_handle_;
     std::unordered_map<std::string, std::unique_ptr<Pipeline>> pipelines_;
     std::unordered_map<std::string, std::unique_ptr<Texture>> textures_;
+    std::unordered_map<std::string, std::unique_ptr<Cubemap>> cubemaps_;
+
     bool buffer_bound_;
 
     /**
@@ -33,6 +38,11 @@ class Renderer {
      * Get a cached texture
      */
     Texture &get_texture(std::string image_filename);
+
+    /**
+     * Get a cached cubemap
+     */
+    Cubemap &get_cubemap(std::vector<std::string> &cubemap_image_filenames);
 
     /**
      * Bind the context

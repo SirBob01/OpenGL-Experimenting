@@ -32,6 +32,7 @@ struct Material {
     std::vector<TextureDescriptor> textures;
     std::string vertex_shader_filename;
     std::string fragment_shader_filename;
+    std::vector<std::string> cubemap_image_filenames = {};
 
     /**
      * Set material-specific uniform values to a shader pipeline

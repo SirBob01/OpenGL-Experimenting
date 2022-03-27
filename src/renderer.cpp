@@ -1,9 +1,11 @@
 #include "renderer.h"
 
 Renderer::Renderer() {
-    buffer_bound_ = false;
     glGenVertexArrays(1, &vao_handle_);
     glBindVertexArray(vao_handle_);
+
+    // Set default state
+    glEnable(GL_DEPTH_TEST);
 }
 
 Renderer::~Renderer() { glDeleteVertexArrays(1, &vao_handle_); }
@@ -26,12 +28,14 @@ void Renderer::bind() {
 }
 
 void Renderer::draw(Mesh &mesh, Material &material, glm::mat4 &transform) {
+    // Bind the mesh before enabling vertex attribute array
     mesh.bind();
-    if (!buffer_bound_) {
-        buffer_bound_ = true;
-        bind();
-    }
+    bind();
+
+    // Bind the material
     material.set_matrix4("transform", transform);
     material.bind();
+
+    // Draw call
     glDrawElements(GL_TRIANGLES, mesh.get_index_count(), GL_UNSIGNED_INT, 0);
 }

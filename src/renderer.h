@@ -23,8 +23,6 @@
 class Renderer {
     uint32_t vao_handle_;
 
-    bool buffer_bound_;
-
     /**
      * Bind the context
      */

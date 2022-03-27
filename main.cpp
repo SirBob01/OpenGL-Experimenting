@@ -85,24 +85,58 @@ int main() {
         glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
         glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
         glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
+    std::vector<glm::vec3> skybox_vertices = {
+        {-1.0f, 1.0f, -1.0f},  {-1.0f, -1.0f, -1.0f}, {1.0f, -1.0f, -1.0f},
+        {1.0f, -1.0f, -1.0f},  {1.0f, 1.0f, -1.0f},   {-1.0f, 1.0f, -1.0f},
+
+        {-1.0f, -1.0f, 1.0f},  {-1.0f, -1.0f, -1.0f}, {-1.0f, 1.0f, -1.0f},
+        {-1.0f, 1.0f, -1.0f},  {-1.0f, 1.0f, 1.0f},   {-1.0f, -1.0f, 1.0f},
+
+        {1.0f, -1.0f, -1.0f},  {1.0f, -1.0f, 1.0f},   {1.0f, 1.0f, 1.0f},
+        {1.0f, 1.0f, 1.0f},    {1.0f, 1.0f, -1.0f},   {1.0f, -1.0f, -1.0f},
+
+        {-1.0f, -1.0f, 1.0f},  {-1.0f, 1.0f, 1.0f},   {1.0f, 1.0f, 1.0f},
+        {1.0f, 1.0f, 1.0f},    {1.0f, -1.0f, 1.0f},   {-1.0f, -1.0f, 1.0f},
+
+        {-1.0f, 1.0f, -1.0f},  {1.0f, 1.0f, -1.0f},   {1.0f, 1.0f, 1.0f},
+        {1.0f, 1.0f, 1.0f},    {-1.0f, 1.0f, 1.0f},   {-1.0f, 1.0f, -1.0f},
+
+        {-1.0f, -1.0f, -1.0f}, {-1.0f, -1.0f, 1.0f},  {1.0f, -1.0f, -1.0f},
+        {1.0f, -1.0f, -1.0f},  {-1.0f, -1.0f, 1.0f},  {1.0f, -1.0f, 1.0f}};
 
     // Create the renderer
     Renderer renderer;
 
     // Create the mesh
     Mesh mesh(vertices, texture_coordinates, indices);
+    Mesh skybox_mesh(skybox_vertices);
 
     // Create a diffuse (color) texture
     Texture diffuse("../assets/wall.jpg");
+
+    // Create a cubemap texture
+    std::vector<std::string> skybox_image_filenames = {
+        "../assets/skybox/right.jpg", "../assets/skybox/left.jpg",
+        "../assets/skybox/top.jpg",   "../assets/skybox/bottom.jpg",
+        "../assets/skybox/front.jpg", "../assets/skybox/back.jpg"};
+    Cubemap skybox_texture(skybox_image_filenames);
 
     // Create the shaders
     Shader vertex_shader("../src/shaders/default.vert", ShaderStage::Vertex);
     Shader fragment_shader("../src/shaders/default.frag",
                            ShaderStage::Fragment);
 
-    // Create a material
-    Material material(vertex_shader, fragment_shader);
-    // material.set_texture(diffuse, TextureMapping::Diffuse);
+    Shader skybox_vertex_shader("../src/shaders/cubemap.vert",
+                                ShaderStage::Vertex);
+    Shader skybox_fragment_shader("../src/shaders/cubemap.frag",
+                                  ShaderStage::Fragment);
+
+    // Create the materials
+    Material crate(vertex_shader, fragment_shader);
+    crate.set_texture(diffuse, TextureMapping::Diffuse);
+
+    Material skybox(skybox_vertex_shader, skybox_fragment_shader);
+    skybox.set_cubemap("skybox", skybox_texture);
 
     // Set polygon draw mode
     glPolygonMode(GL_BACK, GL_FILL);
@@ -115,8 +149,6 @@ int main() {
 
     bool running = true;
     int ticker = 0;
-
-    glEnable(GL_DEPTH_TEST);
 
     // Main render loop
     while (running) {
@@ -140,6 +172,16 @@ int main() {
             }
         }
 
+        // Draw the skybox
+        // TODO: Move flags (e.g. DepthMask, CullingMode, etc.) to Material
+        glDepthMask(false);
+        glm::mat4 skybox_transform = proj;
+        skybox_transform =
+            glm::rotate(skybox_transform, glm::radians(ticker * 0.2f),
+                        glm::vec3(0.5, 0.4, 0.3));
+        renderer.draw(skybox_mesh, skybox, skybox_transform);
+        glDepthMask(true);
+
         // Draw everything
         for (auto &position : positions) {
             // Calculate the model transform
@@ -149,7 +191,7 @@ int main() {
                                     glm::vec3(0.5, 1.0, 0.0));
 
             // Draw
-            renderer.draw(mesh, material, transform);
+            renderer.draw(mesh, crate, transform);
         }
 
         SDL_GL_SwapWindow(window);

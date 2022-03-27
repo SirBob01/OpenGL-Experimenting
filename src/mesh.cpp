@@ -24,8 +24,22 @@ Mesh::Mesh(std::vector<glm::vec3> &positions,
     generate_buffers(vertices, indices);
 }
 
+Mesh::Mesh(std::vector<glm::vec3> &positions) {
+    std::vector<Vertex> vertices;
+    for (int i = 0; i < positions.size(); i++) {
+        vertices.push_back({positions[i], glm::vec3(0, 0, 0), glm::vec2(0, 0)});
+    }
+    std::vector<uint32_t> indices;
+    generate_buffers(vertices, indices);
+}
+
 void Mesh::generate_buffers(std::vector<Vertex> &vertices,
                             std::vector<uint32_t> &indices) {
+    if (indices.size() == 0) {
+        for (int i = 0; i < vertices.size(); i++) {
+            indices.push_back(i);
+        }
+    }
     index_count_ = indices.size();
     vertex_buffer_ = std::make_unique<Buffer<Vertex>>(
         vertices, BufferType::Vertex, BufferUsage::StaticDraw);

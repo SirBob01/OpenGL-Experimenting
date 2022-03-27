@@ -36,6 +36,7 @@ class Mesh {
     Mesh(std::vector<glm::vec3> &positions,
          std::vector<glm::vec2> &texture_coordinates,
          std::vector<uint32_t> &indices);
+    Mesh(std::vector<glm::vec3> &positions);
 
     /**
      * Bind the vertex and index buffers to the current context

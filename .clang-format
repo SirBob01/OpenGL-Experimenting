@@ -4,3 +4,4 @@ IndentWidth: 4
 DerivePointerAlignment: false
 PointerAlignment: Right
 AlignConsecutiveMacros: AcrossEmptyLines
+NamespaceIndentation: All
